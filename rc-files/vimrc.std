@@ -1,0 +1,201 @@
+" *****************************************************
+" vim: set syntax=vim :
+"
+" The configuration file of my VIM
+" Append following content to your home file ~/.vimrc
+" User - Defined
+" By Dupton
+" *****************************************************
+
+
+
+" *****************************************************
+"               Feature: Basic Setting
+" *****************************************************
+
+" Use Vim defaults instead of 100% vi compatibility
+set nocompatible
+
+" Enable filetype and syntax
+syntax on
+filetype on
+filetype plugin indent on
+
+set backspace=indent,eol,start
+
+set modeline				" Start the pre-syntax feature
+set modelines=2				" 
+" set term=xterm-256color	" xterm ?
+set clipboard=unnamed		" clipboard setting for mac
+
+set showcmd					" Display incomplete commands
+set ruler					" Show the cursor position all the time
+set history=200				" Setup how many lines of history
+set wildmenu				" Display completion matches in a status line
+
+set ttimeout				" time out for key codes
+set ttimeoutlen=100			" Wait up to 100ms after Esc for special key
+
+set incsearch				" smarty search feature
+set hlsearch				" Highlight all search pattern matches
+
+set autoindent				" Setup auto indent
+set shiftwidth=4			" Let indent of command '>>' & '<<' has 4 space
+set tabstop=4				" Let tab key denotes 4 space
+
+
+
+" *****************************************************
+"           Feature: Leader key maps Setting
+" *****************************************************
+
+" Reset mapleader and map with leader key
+let mapleader = " "
+let g:mapleader = " "
+
+" Quit immediately
+nmap <leader><Space>	:q<CR>
+
+" Some useful syntax shortcut
+nmap <leader>1	:set syntax=sh<CR>
+nmap <leader>2	:set syntax=python<CR>
+nmap <leader>3	:set syntax=php<CR>
+nmap <leader>4	:set syntax=vim<CR>
+
+" Some quick switch
+nmap <leader>ih	:set invhls<CR>
+nmap <leader>in	:set invnu<CR>
+nmap <leader>ir	:set invrnu<CR>
+nmap <leader>ic	:set invcuc<CR>
+nmap <leader>il	:set invcul<CR>
+nmap <leader>ip	:set invpaste<CR>
+
+" Mouse enabled toggle
+nmap <leader>ma	:set mouse=a<CR>
+nmap <leader>mv	:set mouse=v<CR>
+
+" Some quick move for more windows status
+nmap <leader>h	<C-W>h
+nmap <leader>j	<C-W>j
+nmap <leader>k	<C-W>k
+nmap <leader>l	<C-W>l
+nmap <leader>H	<C-W>H
+nmap <leader>J	<C-W>J
+nmap <leader>K	<C-W>K
+nmap <leader>L	<C-W>L
+nmap <leader>wh	:vertical resize -9<CR>
+nmap <leader>wl	:vertical resize +9<CR>
+nmap <leader>wj	:resize -4<CR>
+nmap <leader>wk	:resize +4<CR>
+
+" Some quick paste
+nmap <leader>0	"0p
+nmap <leader>:	":p
+nmap <leader>/	"/p
+nmap <leader>-	"-p
+
+" Quick run current script via checking the syntax
+nmap <leader>r	:call Quick_runner("")<Left><Left>
+nmap <leader>R	:call Quick_runner("")<CR>
+" check filetype with syntax's setting
+" merge a final l:run_info
+func Quick_runner(str)
+	exec "w"
+	let l:run_info = "!echo -e '\033[32m--------- running result ---------\033[0m' ; "
+	if &syntax == "python"
+		let l:run_script = "python % " . a:str
+	elseif &syntax == "sh"
+		let l:run_script = "bash % " . a:str
+	else
+		let l:run_script = "NONE"
+	endif
+	if l:run_script == "NONE"
+		let l:run_info = l:run_info . "echo -e '\033[31m•\033[0m Invalid syntax, this script can not be executed.' "
+	else
+		let l:run_info = l:run_info . "echo '[Script] \033[31m" . l:run_script . "\033[0m' ; "
+		let l:run_info = l:run_info . "time " . l:run_script . " ; "
+	endif
+	exec l:run_info
+endfunc
+
+" Overwrite user's vimrc with THIS SCRIPT
+" IMPORTANT : if you do not know what it is, DO NOT USE IT !
+nmap <leader>OW	:call Overwrite_user_vimrc()<CR>
+func Overwrite_user_vimrc()
+	exec "w"
+	exec ":!cp % ~/.vimrc"
+	exec "q"
+endfunc
+
+
+
+" *****************************************************
+"         Feature: Overwrite some default keys
+" *****************************************************
+
+" Smarty move
+nnoremap 0	^
+nnoremap ^	0
+nnoremap j	gjzz
+nnoremap k	gkzz
+nnoremap gj	jzz
+nnoremap gk	kzz
+nmap <C-J>	Lzz
+nmap <C-K>	Hzz
+
+nmap !	:!<Space>
+
+" Map arrow keys in insert/command mode
+map! <C-J>	<Down>
+map! <C-K>	<Up>
+map! <C-H>	<Left>
+map! <C-L>	<Right>
+map! <C-A>	<Home>
+map! <C-E>	<End>
+map! <C-D>	<Del>
+
+" Some quick command
+nmap ;h	:help 
+nmap ;H	yiw:help <C-R>0<CR>
+nmap ;s	:sp 
+nmap ;S	:Sex<CR>
+nmap ;v	:vsp 
+nmap ;V	:Vex<CR>
+
+
+
+" *****************************************************
+"                  Feature: Command
+" *****************************************************
+
+" command
+" ???
+
+
+
+" *****************************************************
+"              Feature: Auto File Complete
+" *****************************************************
+
+" Auto Title for shell
+nmap <F1>	:call Auto_title_sh()<CR>
+func Auto_title_sh()
+    call setline(1, "#!/bin/bash")
+    call setline(3,"# Name:         ".expand("%:t"))
+    call setline(4,"# By:           Dupton")
+    call setline(5,"# Date:         ".strftime("%Y-%m-%d"))
+    call setline(6,"# Desc:         ~ edit now ~")
+    call setline(7,"# ------------------------------------------------------")
+endfunc
+
+" Auto Title for python
+nmap <F2>	:call Auto_title_python()<CR>
+func Auto_title_python()
+	call setline(1, "#!bin/python")
+endfunc
+
+" Auto Title for php
+nmap <F3>	:call Auto_title_php()<CR>
+func Auto_title_php()
+	call setline(1, "// php")
+endfunc

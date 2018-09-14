@@ -1,0 +1,47 @@
+# *****************************************************
+# vim: set syntax=sh :
+#
+# The configuration file of common bash
+# Append following content to your home file ~/.bashrc
+# User - Defined
+# By Dupton
+# *****************************************************
+
+
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# # Make bash check its window size after a process completes
+# shopt -s checkwinsize
+
+
+# for security
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
+# for crontab
+# export EDITOR=vim
+
+# for vi & vim
+alias vi='vim'
+
+# for command `ls'
+alias ll='ls -plus'
+export CLICOLOR=1
+export LSCOLORS='Exgxcxdxcxegedabagadxc'
+
+# for command `grep'
+alias grep='grep -v "grep" | grep --color=auto'
+
+
+# # for $PATH
+# NEWPATH=$PATH
+# for name in "python3" "redis" "git"
+# do
+# 	NEWPATH=$NEWPATH:/usr/local/$name/bin
+# done
+# export PATH=$NEWPATH
