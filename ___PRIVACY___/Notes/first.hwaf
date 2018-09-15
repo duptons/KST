@@ -1,0 +1,525 @@
+## vim: set syntax=python : ##
+
+## IT '成长型' 知识图谱 ##
+## create 2015-07-08 ##
+## update 2017-03-27 ##
+
+from mzx.Job import Knowledge
+
+
+def SVN(args): 
+	1、check out
+		svn co svn://localhost/product/web/branches/branches-iwencai-20150108
+
+	2、问题处理
+		1> connection refused (无法连接)
+			一般可以使用  ssh -fNC -L 3690:172.20.23.253:3690 webdev@172.20.0.52
+			(由于是使用跳板机的原因，需要远程连接svn)
+		2> skipped '.' (连接的目录不对)
+		3> 其他普通问题
+			一般可以直接 svn cleanup，然后再使用
+		4> "Network connection closed unexpectedly"
+			???
+		5> 只检出目录但不检出目录下其他内容
+			svn co --depth=empty svn://.../example
+		6> "svn is already under version control"
+			在需要add的目录下递归的删掉所有.svn文件，然后重新add
+			find ./ -name ".svn" | xargs rm -rf
+
+	3、SVN setting example
+		passtype // simple
+		username // wuyuanwang
+		password // a25d6714
+		svn:realmstring // <svn://localhost:3690> a040f60c-cf44-427d-8f88-9b95427dc95e
+
+
+def PHP(args):
+	1、file_put_contents
+		file_put_contents(
+			'/var/www/html/mazhongxiang/log_1.txt',
+			'%%mazhongxiangBEGIN time:['.date('Y-m-d H:i:s', time()).']%%'.PHP_EOL.json_encode($postData).PHP_EOL.'%%mazhongxiang ================== END%%'.PHP_EOL,
+			FILE_APPEND
+		);
+
+	2、[] / ->
+		$txt->response->docs[0]->PageTitleSimi
+		$txt['response']['docs'][0]['PageTitleSimi']
+
+	3、PHP mongodb
+		$doc = $this->docAUTOWRITER->find(array(
+			'template_name' => $template_name,
+			'key' => array('$regex'=>'.*'.$stock_code.'.*', '$options'=>'$i')
+		));
+
+	4、PHP 嵌套函数
+		PHP很早就支持嵌套函数了。并是不PHP5.3有闭包时才有的。然而，它却不是象JS，AS那样的闭包嵌套。即它的嵌套函数根本无闭包模式的逃脱。
+		PHP嵌套函数有一些特别之处。最特别的是，当外部函数被调用时，内部函数就会自动进入全局域中，成为新的定义函数。
+		所以，当外部函数确保是被调用一次，不会被调用二次，那么，可以写嵌套函数在其中。否则，就会引发致命错误。
+
+	5、Cookie
+		1> Cookie设置
+			setcookie('name', 'value'[, time()+60*60*24[, '/'[, 'www.web3.com']]]);
+			其中cookie名称和值是必需的，失效时间为当前时间加上有效期的长度，路径的设置要特别注意不要出错（一般设置'/'即根目录比较好一些），域名的设置相对也比较重要（如果在子域名中设置cookie则父域名不能使用）。
+		2> Cookie删除
+			setcookie('name', null, [time()-1[, '/'[, 'www.web3.com']]]);
+			因为一般不提供直接删除的操作，所以删除方式为将其设置为失效。
+		3> Cookie获取
+			$_COOKIE['name'];
+		4> 其他说明
+			浏览器一般都可以查看cookie，例如
+			Chrome：地址栏输入 javascript:alert(document.cookie) 或 chrome://settings/cookies
+			Firfox：地址栏出入 javascript:alert(document.cookie)
+
+
+def CodeIgniter(args):
+	1、base_url('xxx')  +  index_page  =  site_url('xxx')
+		base_url 一般是网站的根路径配置，site_url 相当于 base_url 加上 Index_page 的效果，所以一般使用 site_url 会有更好的可移植性。base_url 和 index_page 的配置在 application/config/config.php 中进行，其中默认效果为 $['base_url'] = ''，$['index_page'] = 'index.php'。
+
+
+def Python(args):
+	1、 sorted()
+		cur_list = []	
+		sorted(cur_list, key=lambda v:v[2]['name'], reverse=True)
+
+	2、 items()
+		dict_t = {'1': 'a', '2': 'b'}
+		list_t = dict_t.items()  ==> [('1', 'a'), ('2', 'b')]
+
+	3、 range & xrange
+		1> 用法上基本一致  [x]range([start, ]stop[, step])
+			1) range(4) == list( xrange(4) )  || [0, 1, 2, 3]
+			2) range(2, 5) == list( xrange(2, 5) )  || [2, 3, 4]
+			3) range(1, 50, 10) == list( xrange(1, 50, 10) )  || [1, 11, 21, 31, 41]
+		2> 不同之处
+			1) type(range(4)) == "<type 'list'>"  &&  type(xrange(4)) == "<type 'xrange'>"
+			2) range 直接返回一个 list，如果 list 比较大的话，比如 10**4，那么性能并不是很好，
+				此时可以使用 xrange 代替；xrange 返回一个生成器，每次循环都会返回一个元素；
+				避免一下子直接生成一个大的 list 而分配内存空间的尴尬。
+			3) 总体来看，相对来说 xrange 的循环性能较好一些。
+
+	4、 items & iteritems
+		1> {}.items() 返回 list，而 {}.iteritems() 返回迭代器
+		2>	for k, v in {}.items():
+				pass
+			for k, v in {}.iteritems():
+				pass
+		3> ititem = {}.iteritems().next() || ()
+
+	5、 zip
+		1> 	a = ['a', 'b', 'c']
+			b = ['1', '2', '3']
+			zip(a, b) == [('a', '1'), ('b', '2'), ('c', '3')]
+		2>	c = zip(a, b)
+			zip(*c) == [('a', 'b', 'c'), ('1', '2', '3')]
+
+	6、 import signal / import traceback / from optparse import OptionParser
+
+	7、 from multiprocessing import Process
+		def func(a, b):
+			pass
+		for n in xrange(5):
+			Process(target = func, args = (a, b))
+		(将函数 func 以多个子进程的方式执行)
+
+
+def Django(args):
+	1、环境搭建：
+		1> 当前django必须有相应版本的python支持才可运行
+			1) 首先解压：tar xvzf Django-1.8.3.tar.gz 
+			2) 安装：
+				cd Django-1.8.3  || 进入解压后的目录
+				python setup.sh install
+			3) 检测是否成功安装：
+				python
+				>>> import django
+				>>> django.VERSION (或者 django.get_version())
+			*) 如果python版本不支持，请安装新版python，可以使用工具anaconda来安装python (不覆盖系统python，安装在~/下)
+		2> 创建 project 和 app
+			1) django-admin.py startproject projectname
+			2) django-admin.py startapp app-name (或者进入目录 projectname，找到manage.py所在的目录，运行 python manage.py startapp appname)
+		3> 同步数据库，创建 superusers，并使用django管理界面
+			python manage.py syncdb
+
+	2、奇葩：
+		1> App 添加支持：
+			INSTALLED_APPS 添加 "[app_name]"
+		2> POST 403 error：
+			MIDDLEWARE_CLASSES 添加 "django.middleware.csrf.CsrfResponseMiddleware" (测试无效)
+			注释掉 "django.middleware.csrf.CsrfViewMiddleware" (测试成功)
+		3> CVB and FVB
+			更倾向于后者，前者增加无谓的学习噪音
+
+
+def Linux(args):
+	## `cp` & `scp`
+		1> cp
+			1) cp -P aaa bbb
+				-P 表示永远不要跟随源文件中的符号链接
+			2) cp -a aaa bbb
+				-a 相当于 -dR，表示对目录的递归复制
+		2> scp
+			scp  aaa  username@host:/filepath/bbb
+			scp  username@host:/filepath/aaa  bbb
+			按下回车 => 输入登录密码 => 复制成功
+
+	## `vi` & `vim`
+		1> 关于 Vim 的配置：
+			配置属于自己的，即当前用户的vim：
+			1) 将系统版本的 /usr/share/vim/vimrc（或者/etc/vimrc）复制到自己目录下
+				cp /usr/share/vim/vimrc  ~/.vimrc
+			2) 此时，被命名为.vimrc，保存在~/下面，在其中可以设置 行号、语法高亮开启、编码、缩进等
+				set shiftwidth=4
+				set tabstop=4
+		2> vi
+			:set nonu (设置无行号)		:set nu (设置有行号)
+			:set paste (进入paste模式)	:set nopaste (取消paste模式)
+		3> 进阶：
+			1) 搜索模式，使用\c忽略大小写，例如 /\cmysql
+
+	## `screen`
+		1> 配置：
+			~/.screenrc 中加入如下参数配置
+				caption always "%{= kw}%-w%{= kG}%{+b}[%n %t]%{-b}%{= kw}%+w %=%d %M %0c %{g}%H%{-}"
+				termcapinfo rxvt 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+		2> 基本操作：
+			screen -S name(名称)		打开一个新的screen
+			screen -ls 					列出所有打开的screen
+			screen -r name(名称)		连接到名为name的screen (detached ==> attached)
+			screen -d name(名称)		退出名为name的screen (attached ==> detached)
+			进入一个screen之后，可以使用 <Ctrl-A> + [KEY] 执行各种操作
+			1) <Ctrl-A> + c 			打开一个新窗口
+			2) <Ctrl-A> + <SPACE>		循环切换窗口
+			3) <Ctrl-A> + 0-9			切换至某一个窗口，有数字命名的id
+			4) <Ctrl-A> + <Ctrl-A>		最近使用过的两个窗口相互切换
+			5) <Ctrl-A> + A 			命名窗口名称
+			6) <Ctrl-A> + K/k 			杀死当前窗口
+			7) <Ctrl-A> + d 			退出当前screen
+
+	## `grep`
+		1> grep -rn "string" filepath
+			在路径filepath下查找字符串"string"所在的文件，结果为 "文件:行号:内容"
+			（如果filepath为 * ，则表示递归当前路径下所有目录）
+			>> "string" 使用正则
+			>> filepath 使用shell通配符
+			-r 	递归
+			-n 	行号
+		2> grep -v "string" filepath
+			-v  取反（取得当前不匹配的结果，即否定）
+		3> grep "pattern1\|pattern2" filepath
+			使用 '\|' 来分割多个pattern，来实现OR的操作
+
+	## `tar`
+		1> 单个文件夹或文件
+			tar czvf aaa.tar.gz bbb (打包)
+			tar xzvf aaa.tar.gz bbb (解压)
+		2> 多个文件或文件夹
+			1) tar czvf aaa.tar.gz  bbb ccc ddd
+				将 bbb ccc ddd 打包到一个文件 aaa.tar.gz 中
+			2) tar xzvf aaa.tar.gz -C  bbb
+				将 aaa.tar.gz 解压到文件夹 bbb 中
+				-C 表示文件夹，
+				将所有内容解压至某个文件夹是为了不污染当前目录结构，
+				保证一定的可读性, 管理结构的完整性。
+
+	## `find`
+		1> find filepath -name "*.pyc"
+			查找名称为*.pyc的文件或文件夹，*代表任意字符
+			>> filepath 使用通配符
+			>> "*.pyc" 使用shell通配符
+		2> find ./ -name "*.pyc" | xargs rm -rf
+			同1>，并将搜到的文件删除掉
+
+	## `vimdiff` & `diff`
+		1> vimdiff aaa bbb
+			比较两个文件的不同
+		2> diff -urNa aaa bbb > tmp.diff
+			比较两个文件夹的不同，也可以比较文件的不同，并将结果输出在 tmp.diff 文件中
+
+	## `cd`
+		1> cd /home/xxx > /dev/null
+			shell 脚本中 cd 命令有回显会输出到屏幕上，可以这样屏蔽
+		2> cd -
+			返回上一次目录
+			注意：如果有文件夹名称开头是-，例如 -aaa，
+				则 `cd -aa` 命令无法进入此文件夹，应该使用 `cd ./-aa` 来代替。
+
+	## `echo`
+		1> echo -e "\033[34;46m xxxxxx \033[0m"
+			打印出彩色字
+			-e 表明输出的字符串支持 \ 转义
+			常用：
+				"\c"	不换行
+				"\b"	回退一格
+		2> 经典的"下载状态"事例
+			echo -e "loading:[  \c"
+			for ((i=0; i<30; i++))
+			do
+			    sleep 0.1
+			    echo -e "\b\b=>]\c"
+			done
+			echo ""
+			sleep 1
+
+	## `netstat`
+		1> netstat -lntp
+			查看所有监听端口
+		2> netstat -antp
+			查看所有已经建立的连接
+		3> netstat -s
+			查看网络统计信息
+
+	## `chmod` & `chown`
+		1> chmod
+			1) chmod 655 aaa
+				改变文件aaa操作权限为655，即rw-r-xr-x
+			2) chmod +x aaa
+				给文件aaa增加操作权限x（执行）
+			3) chmod -R 777 aaa
+				将文件夹aaa及其所有子文件的操作权限改为777，即rwxrwxrwx
+				-R 表示递归
+		2> chown
+			1) chown -R www:www aaa
+				将文件夹aaa及其所有子文件的所属权限设置为 www:www
+				-R 表示递归
+
+	## `ln`
+		1> ln -s aaa bbb
+			给文件aaa建立一个符号链接bbb
+
+	## `curl`
+		1> curl http://www.abc.com
+		2> curl -O http://www.abc.com/xxx.png
+			将远程文件下载保存，名称不变
+		3> curl -d ... ???
+
+	## `tail`
+		1> tail -f aaa
+			显示文件aaa末尾几行，并不断刷新，通常用来实时监控Log文件
+
+	## `cat`
+		1> ls -apls | cat > 1.txt
+		2> ls -ld | cat > 1.txt  （ls -d 不递归）
+
+	## `ls`
+		1> ls -plus
+
+	## `awk`
+		1> cat /etc/passwd | grep -v nologin | awk -F":" '{print $1"--"$2"--"$3}'
+		2> whereis python | awk '{for (i=1; i< NF; ++i) print $(i+1)}' | xargs ls -ld
+			上面这条基本等价于：
+				whereis python | awk '{for (i=1; i< NF; ++i) print $(i+1)}' | while read line; do
+					ls -ld $line
+				done
+			也等价于：[进程替换写法，解决while局部变量问题]
+				while read line; do
+					ls -ld $line
+				done < <(whereis python | awk '{for (i=1; i< NF; ++i) print $(i+1)}')
+
+	## `cut`
+		1> cat xxx | cut -d":" -f2
+			等价于：
+			cat xxx | awk -F":" '{print $2}'
+
+	## 'user-related'
+		1> users 或者 who
+			查询所有终端已登录用户（users）以及用户的各种具体信息（who）
+			建议一般用who就OK了，users不太需要
+		2> whoami
+			查询当前正在操作的有效用户
+		3> passwd username
+			按下回车 => 输入两次新密码 => username的密码修改成功
+		4> cat /etc/passwd
+			查看所有用户基本信息
+		5> adduser username && passwd username
+			创建新用户并设置修改密码
+		6> vi /etc/sudoers
+			设置sudoer用户，将此文件中的root部分复制一行，修改一下用户名即可
+
+	## `ssh`
+		1> ssh username@host （默认端口22）
+		2> ssh -p port username@host （-p 用来支持非22端口）
+
+	## `hostname`
+		1> hostname -I  显示当前服务器的IP
+
+	## `jobs`
+		1> 如果一个命令正在运行，又想退出让它后台运行，按<Ctrl+Z>
+		2> 查看刚刚的后台运行，用 jobs
+		3> fg %n 用于将某个后台的job还原到前台来
+		
+	## `pinky`
+		1> ??? 
+
+	## `wget`
+		1> wget -c url
+			-c 支持断点续传
+		2> wget -O filename url
+			-O 对下载的文件重命名
+
+	## `chattr` & `lsattr`
+		1> chattr ???
+
+	## `nslookup` & `dig`
+		1> dig +trace www.xxx.com
+			DNS解析追踪
+		2> nslookup www.xxx.com
+
+	## `tty`
+		1> tty
+			显示当前所处的控制终端名称，
+			一般路径在 /dev/pts/ 这里，比如有/dev/pts/0, /dev/pts/2 ...
+		2> echo "haha" > /dev/pts/2
+			将"haha"重定向到/dev/pts/2终端去，
+			这种用法以前有遇到过，比如 echo "nani" > /dev/null
+
+	## `ps`
+		1> ps aux | grep "python"
+
+	## `du`
+		1> du -sh
+
+	## `nc`
+		nc -z hostname port
+
+	## `lsof`
+		1> sudo lsof -i :port
+			查询启用该端口号的进程及其PID，注意使用root权限，或sudo方式
+
+	## `ssh-keygen` & `ssh-add`
+		1> ssh-keygen -t rsa -C "注释"
+			按3次回车，大功告成。
+			生成一对公钥/私钥，存放在~/.ssh文件夹下，其中id_rsa（私钥）、id_rsa.pub（公钥）
+			复制 id_rsa.pub 到对方服务器，从而实现无密码登录
+			注意：
+				如果不想使用默认的id_rsa，可以在第一次回车之前输入你想要的文件名，如git_rsa
+		2> ssh-add id_rsa
+			1中操作完之后，执行2的命令，完成添加
+			注意：
+				如果添加出错，如”Could not open a connection to your authentication agent.“
+				则执行 ssh-agent bash，之后重新执行 ssh-add
+		3> ssh-add -l
+			列出（查看）所有添加的rsa
+
+
+	## `git`
+		1> git add
+		2> git status
+		3> git commit
+			1) git commit
+			2) git commit -m "comment"
+		4> git log
+		5> git remote
+			1) git remote
+			2) git remote -v
+		6) git push
+			1) git push origin master
+		7) git config
+			1) git config --list
+			2) git config --global user.email "dupton@126.com"
+			3) git config --global user.name "Dupton"
+			4) git config --global core.editor vim
+
+	## 其他快捷键
+		<Ctrl-R>  搜索历史命令
+		<Ctrl-L>  清屏，相当于 clear 命令
+		<Ctrl-P>  回到上一行命令
+		<Ctrl-?>  撤销前一次输入
+		<Alt -R>  撤销前一次动作
+
+	## 环境变量
+		$SSH_CLIENT 		使用ssh访问的客户端ip地址，以及端口
+		$SSH_CONNECTION 	使用ssh访问的客户端ip地址和本机的ip地址，以及端口
+		$PATH
+			增加新的path变量：在 ~/.bashrc 中添加一行 'export PATH=$PATH:/new-path'
+
+	## 一些常用配置
+		1> .bashrc
+			export EDITOR=vim
+			alias rm='rm -i'
+			alias cp='cp -i'
+			alias mv='mv -i'
+			alias vi='vim'
+
+
+
+def CSS(args):
+	1、基础布局
+		1> 左右布局
+			{float: left; width: 650px;}  {float: right; width: 250px;}
+		2> transition 变换
+		3> css图片镂空和虚线边缘效果
+			参考 http://www.zhangxinxu.com/wordpress/2016/02/css-hollow-image-for-transition-background-color-problem-fixed/
+		4> clip {rect(top right bottom left);}
+			参考 http://www.zhangxinxu.com/wordpress/2011/04/css-clip-rect/
+
+
+def DOS(args):
+	1、基本
+		1> cd path 				[路径改变]
+		2> del filename 		[删除文件]
+		3> md dirname 			[创建文件夹]
+		4> rd /S /Q dirname 	[递归删除文件夹]
+		5> ren file1 file2 		[重命名]
+		6> dir /b "*.jpg" 		[列出后缀为.jpg的文件]
+		7> rem comment 			[单行注释，更推荐 ":: comment" 注释]
+
+	2、调用javascript
+		mshta vbscript:window.execScript("alert('1');","javascript") 
+
+	3、Znns.bat = """
+			@echo off
+			set "p=E:\Zeelor\C\T.{645ff040-5081-101b-9f08-00aa002f954e}"
+			if not exist %p% md %p%
+			if exist Y: (subst /d Y:) else (subst Y: %p%)
+		"""
+
+	4、find & findstr
+		查询目标字符串是否满足过滤规则，返回符合的"行"
+		(其中 find 后面的查询字符串必须加 "")
+		1> findstr "ab st" 1.txt
+			或 dir /b | findstr "ab st"
+			或 echo "1234ab st345" | findstr "ab st"
+			(不带参数，查询目标是否包含字符串 "ab" 和 "st")
+		2> findstr /c:"ab st" 1.txt
+			或 dir /b | findstr /c:"ab st"
+			或 echo "1234ab st345" | findstr /c:"ab st"
+			(带有参数 /c ，查询目标是否包含字符串 "ab st")
+
+	5、if...else...
+		set "a=abc000def"
+		if "%a:~3,3%"=="000" (echo true) else (echo false)
+
+	6、for
+		for /f "tokens=1* delims=_" %a in ('dir /b "*.txt"') do (ren "%a_%b" "%a%~xb")
+		假设有文件 11_bak.txt  22_bak.txt  33_bak.txt，运行以上代码
+		文件改名的结果为 11.txt  22.txt  33.txt 
+
+	7、设置变量延迟
+		setlocal enabledelayedexpansion
+		本来用 %a% 表示的变量如果要延迟表示，则用 !a!
+
+	8、route print
+		显示本机的路由控制表
+		如果网关（一般为192.168.1.1）被路由到某个特别IP上，说明系统在使用全局代理
+		全局代理表示：所有流量都被转发到那个IP，不仅仅是浏览器流量
+
+	9、nslookup
+		nslookup www.xxx.com
+
+	10、netstat
+		netstat -ano | findstr LISTEN
+
+	11、netsh interface portproxy
+
+
+def WEB(args):
+	1、常用网络端口
+		1> 80		TCP/IP 		http服务
+		2> 443		TCP/IP 		https服务
+		3> 22		TCP/IP 		远程登录服务(ssh)
+
+	2、ICMP协议：
+		拒绝此协议可以阻止绑定域名的 ping 访问，但仍然可以解析 DNS 拿到IP地址
+
+
+# =====================  E  =============  N  =============  D  ===================== #

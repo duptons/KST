@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# Name:         ssher
+# By:           Dupton
+# Date:         2018-03-04
+# Desc:         Connect to remote-host you need with ssh/scp 
+# ------------------------------------------------------
+
+
+KST_PATH=init_kst_path_once
+
+####################
+
+# setting host and operation
+Operate=$1
+Host=$2
+# check parameters
+if [[ ! $Operate =~ ^(ssh|scp)$ ]] || [[ ! $Host =~ ^(aly|bwg|bwg:P|vlt)$ ]]; then
+	echo "Usage: $0 [ssh|scp] [aly|bwg|bwg:P|vlt]"
+	exit 1
+fi
+# setting remote username
+RUSER=mzx
+
+####################
+
+
+##
+## choose remote host (including address and port)
+##
+case "$Host" in
+# aliyun
+aly)
+	ADDR=121.41.41.173
+	PORT=22
+	OPTION=""
+	;;
+# bandwagon
+bwg)
+	ADDR=176.122.150.142
+	PORT=26400
+	# PORT=26500
+	OPTION=""
+	;;
+bwg:P)
+	ADDR=176.122.150.142
+	PORT=26400
+	OPTION="ProxyCommand corkscrew 192.168.1.129 2119 %h %p"
+	;;
+# vultr
+vlt)
+	# ADDR=207.148.75.160
+	# ADDR=104.238.160.10
+	# ADDR=217.69.12.52
+	# ADDR=149.28.86.109
+	# ADDR=45.63.106.101
+	# ADDR=149.28.26.191
+	# ADDR=149.28.90.54
+	ADDR=45.76.168.157
+	PORT=22
+	# PORT=23900
+	# PORT=23800
+	# PORT=11650
+	# PORT=11870
+	OPTION=""
+	;;
+esac
+
+
+##
+## choose operation setting by parameters
+##
+case "$Operate" in
+# ssh to remote
+ssh)
+	ssh -p $PORT -o "$OPTION"  $RUSER@$ADDR
+	;;
+# scp to remote
+scp)
+	fromfile=$3
+	tofile=$4
+
+	if [[ "${fromfile:0:1}" = ":" ]]; then
+		fromfile=$RUSER@$ADDR${fromfile}
+	elif [[ "${tofile:0:1}" = ":" ]] && [[ -f ${fromfile} ]]; then
+		tofile=$RUSER@$ADDR${tofile}
+	else
+		echo "Error Path :"
+		echo "Need correct fromfile and tofile."
+		exit 1
+	fi
+
+	scp -P $PORT -o "$OPTION"  ${fromfile} ${tofile}
+	;;
+esac
