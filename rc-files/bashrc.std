@@ -30,7 +30,7 @@ alias cp='cp -i'
 alias vi='vim'
 
 # for command `ls'
-alias ll='ls -plus'
+alias ll='ls -pls'
 export CLICOLOR=1
 export LSCOLORS='Exgxcxdxcxegedabagadxc'
 

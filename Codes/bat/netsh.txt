@@ -1,0 +1,12 @@
+# ---------------------
+# Win7 : netsh
+
+
+# list
+netsh interface portproxy show all
+
+# add
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0  listenport=1099  connectaddress=127.0.0.1  connectport=54321 protocol=TCP
+
+# delete
+netsh interface portproxy delete v4tov4 listenaddress=0.0.0.0  listenport=1099 

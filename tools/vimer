@@ -23,14 +23,14 @@ SN=$1
 # echo ${filedict[*]}
 
 FileList=(
-"$KST_PATH/___PRIVACY___/Notes/first.hwaf"
-"$KST_PATH/___PRIVACY___/Notes/second.hwaf"
-"$KST_PATH/___PRIVACY___/Notes/PHP.nts"
-"$KST_PATH/___PRIVACY___/Notes/Python.nts"
+"$KST_PATH/Notes/first.nts"
+"$KST_PATH/Notes/second.nts"
+"$KST_PATH/Notes/PHP.nts"
+"$KST_PATH/Notes/Python.nts"
+"$KST_PATH/___PRIVACY___/Hobbies/Movie.txt"
+"$KST_PATH/___PRIVACY___/Hobbies/Music.txt"
 "$KST_PATH/___私人生活___/Scrt/Privacy/mine.hwaf"
 "$KST_PATH/___私人生活___/Temp/Tips.txt"
-"$KST_PATH/___私人生活___/Hobbies/Movie.txt"
-"$KST_PATH/___私人生活___/Hobbies/Music.txt"
 )
 ShortNameList=(
 "fir"
