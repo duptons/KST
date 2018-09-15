@@ -1,0 +1,35 @@
+# *****************************************************
+# vim: set syntax=screen :
+#
+# The configuration file of screen on CentOS/Debian...
+# Append following content to your home file ~/.screenrc
+# User - Defined
+# By Dupton
+# *****************************************************
+
+
+
+##############################
+# setenv LC_CTYPE en_US.UTF-8
+defutf8 on
+
+# 启动时不显示欢迎屏幕  
+startup_message off
+
+# 关闭错误提示  
+# vbell off
+
+# 在最下一行显示窗口列表和时钟  
+hardstatus on
+hardstatus alwayslastline
+# caption always "%{= kw}%-w%{= kG}%{+b}[%n %t]%{-b}%{= kw}%+w %=%d %M %0c %{g}%H%{-}"  
+hardstatus string "%{.bW}%-w%{= kG}%n %t%{-}%+w %=%{..G} %H %{..Y} %Y/%m/%d %c:%s "
+
+# VIM退出后屏幕缓冲区残留问题
+altscreen on
+# 屏幕缓冲区 1024 行。  
+defscrollback 1024
+# 支持屏幕滚动
+# termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'  
+termcapinfo xterm* ti@:te@
+

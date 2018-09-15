@@ -181,21 +181,20 @@ nmap ;V	:Vex<CR>
 nmap <F1>	:call Auto_title_sh()<CR>
 func Auto_title_sh()
     call setline(1, "#!/bin/bash")
-    call setline(3,"# Name:         ".expand("%:t"))
-    call setline(4,"# By:           Dupton")
-    call setline(5,"# Date:         ".strftime("%Y-%m-%d"))
-    call setline(6,"# Desc:         ~ edit now ~")
-    call setline(7,"# ------------------------------------------------------")
+    call setline(3, "# Name:         ".expand("%:t"))
+    call setline(4, "# By:           Dupton")
+    call setline(5, "# Date:         ".strftime("%Y-%m-%d"))
+    call setline(6, "# Desc:         ~ edit now ~")
+    call setline(7, "# ------------------------------------------------------")
 endfunc
 
 " Auto Title for python
 nmap <F2>	:call Auto_title_python()<CR>
 func Auto_title_python()
-	call setline(1, "#!bin/python")
-endfunc
-
-" Auto Title for php
-nmap <F3>	:call Auto_title_php()<CR>
-func Auto_title_php()
-	call setline(1, "// php")
+	call setline(1, "# --*-- coding: utf-8 --*--")
+    call setline(3, "# Name:         ".expand("%:t"))
+    call setline(4, "# By:           Dupton")
+    call setline(5, "# Date:         ".strftime("%Y-%m-%d"))
+    call setline(6, "# Desc:         ~ edit now ~")
+    call setline(7, "# ------------------------------------------------------")
 endfunc
