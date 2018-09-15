@@ -413,7 +413,9 @@ def Linux(args):
 			2) git remote -v
 		6) git push
 			1) git push origin master
-		7) git config
+		7) git pull
+			1) git pull
+		8) git config
 			1) git config --list
 			2) git config --global user.email "dupton@126.com"
 			3) git config --global user.name "Dupton"
