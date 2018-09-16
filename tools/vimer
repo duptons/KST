@@ -22,12 +22,13 @@ SN=$1
 # filedict=( ["mine"]="haha" ["fir"]="ceshi" )
 # echo ${filedict[*]}
 
-ShortNameList=("fir" "sec" "php" "py" "movie" "music" "tips" "mine")
+ShortNameList=("fir" "sec" "php" "py" "sh" "movie" "music" "tips" "mine")
 FileList=(
 "$KST_PATH/Notes/first.nts"
 "$KST_PATH/Notes/second.nts"
 "$KST_PATH/Notes/PHP.nts"
 "$KST_PATH/Notes/Python.nts"
+"$KST_PATH/Notes/Linux.nts"
 "$KST_PATH/___PRIVACY___/Hobbies/Movie.txt"
 "$KST_PATH/___PRIVACY___/Hobbies/Music.txt"
 "$KST_PATH/../___私人生活___/Temp/Tips.txt"

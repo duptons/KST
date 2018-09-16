@@ -1,52 +1,71 @@
-## vim: set syntax=sh : ##
-##						##
-##		PHP Notes		##
-##						##
-## -------------------- ##
+## vim: set syntax=python : ##
+##							##
+##		Python Notes		##
+##							##
+## ------------------------ ##
 
 
-## 写在前面
 
-	对于Python的定位，可以是Web项目（Django），也可以是用来做爬虫（scrapy），都有涉及。
+""" 写在前面 """
 
-## 准备工作
+	对于Python的定位:
+	## Web项目
+		| Django框架
 
-	1> 系统环境
+	## 爬虫
+		| Scrapy框架 && Xpath
+		| 分布式库 scrapy_redis
+		| 经典库 urllib requests
+
+	## 数据处理、分析
+		| 基本的dict/list/tuple/set
+		| 经典库 numpy pandas
+
+
+
+""" 准备工作 """
+
+	## 系统环境
 		Linux发行版 CenOS 6/7， Debian 8/9
 
-	2> Python版本选择及安装
+	## Python版本选择及安装
 
-		1) 版本选择
+		1> 版本选择
 			基本上，python2 和 python3，其中>=2中比较经典的是2.7.x，>=3中选择最新的稳定版就可以，比如现在最新的3.7.x。
-		2) 编译安装
-			一般系统都有自带python，但往往版本较低（2.x），因此，常见的python的安装，通常是在保留旧版的情况下，新安装高版本的python，并将默认版本设置为高版本，将依赖旧版本的一些常用软件的启动文件进行修改，解决版本冲突。
+		2> 编译安装
+			一般系统都有自带python，但往往版本较低（2.x），因此，常见的python的安装，通常是在保留旧版的情况下，新安装高版本的python，并将默认版本设置为高版本，将依赖旧版本的一些常用软件的启动文件进行修改，解决版本冲突，如yum等。
 			| wget --no-check-certificate https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
 			| tar xzvf Python-3.7.0.tgz
 			| cd Python-3.7.0
 			| ./configure --prefix=/usr/local/python3
 			| make && make install
 
-## 包管理器
+	## 包管理器
 
-	1> pip
-		>> 命令
-		| pip list/search/install...
+		1> pip
+			>> 基础命令
+			| pip list/search/install...
 
-		>> 国内源
-		| pip install xxx -i https://pypi.douban.com/simple
-		必须使用 HTTPS 安全连接
+			>> 国内源
+			必须使用 HTTPS 安全连接
+			| pip install xxx -i https://pypi.douban.com/simple
 
 
-## Python基础
 
-	1> 装饰器
+""" Python基础 """
+
+	## 装饰器[decorator]
 		Python是一种动态解析型语言，装饰器使用来扩展函数功能。
 		
-		1) @staticmethod		静态装饰器，单例函数，只能类来调用，实例无法调用。
-		2) @csrf_exempt			取消csrf验证
-		3) @ensure_csrf_cookie	给当前页面设置csrf cookie
+		1> @staticmethod		静态装饰器，单例函数，只能类来调用，实例无法调用。
+		2> @csrf_exempt			取消当前post处理函数的csrf验证
+		3> @ensure_csrf_cookie	给当前页面设置csrf cookie
 
-	2> <urllib>
+
+	## 生成器[generator]
+
+
+	## <urllib>
 		from urllib import request as uR, parse as uP
 		# 将url中的中文转换成urlopen可用的字符
 		url = "https://m.baidu.com/s?kw=我们"
@@ -55,165 +74,246 @@
         rs = uR.urlopen(rq)
         data = rs.read().decode('utf-8')
 
-	3> 生成器（generator）
+
+	## sorted()
+		cur_list = []	
+		sorted(cur_list, key=lambda v:v[2]['name'], reverse=True)
+
+
+	## range() & xrange()
+		... 用法上基本一致
+			[x]range([start, ]stop[, step])
+			| range(4) == list( xrange(4) )  || [0, 1, 2, 3]
+			| range(2, 5) == list( xrange(2, 5) )  || [2, 3, 4]
+			| range(1, 50, 10) == list( xrange(1, 50, 10) )  || [1, 11, 21, 31, 41]
+
+		... 区别
+			>> type()判断类型
+			| type(range(4)) == "<type 'list'>"
+			| type(xrange(4)) == "<type 'xrange'>"
+
+			>> range 直接返回一个 list，如果 list 比较大的话，比如 10**4，那么性能并不是很好，
+				此时可以使用 xrange 代替；xrange 返回一个生成器，每次循环都会返回一个元素；
+				避免一下子直接生成一个大的 list 而分配内存空间的尴尬。
+
+			>> 总体来看，相对来说 xrange 的循环性能较好一些。
+
+
+	## items() & iteritems()
+		... 区别
+			{'k':'v'}.items() 返回 list，而 {'k':'v'}.iteritems() 返回迭代器
+
+		... 迭代
+			| for k, v in {'k':'v'}.items():
+			| 	pass
+			| for k, v in {'k':'v'}.iteritems():
+			| 	pass
+
+		... items()
+			| dict_t = {'1': 'a', '2': 'b'}
+			| list_t = dict_t.items()  ==> [('1', 'a'), ('2', 'b')]
+
+		... iteritems()
+			| ititem = {}.iteritems().next() || ()
+
+
+	## zip()
+		...
+			| a = ['a', 'b', 'c']
+			| b = ['1', '2', '3']
+			| zip(a, b) == [('a', '1'), ('b', '2'), ('c', '3')]
+
+		...
+			| c = zip(a, b)
+			| zip(*c) == [('a', 'b', 'c'), ('1', '2', '3')]
+
+
+	## <multiprocessing>
+		... Process
+			| from multiprocessing import Process
+			| def func(a, b):
+			| 	pass
+			| for n in xrange(5):
+			| 	# 将函数 func 以多个子进程的方式执行
+			| 	Process(target = func, args = (a, b))
+
+		... Pool
+		
+		... Queue
+
+
+	## <threading>
 
 		
 
-## 关于Django
+""" 关于Django """
 
-	1> 安装
-		使用pip安装
-		| sudo pip install django
+	## 安装
+		... 使用pip安装
+			| sudo pip install django
 
-	2> 创建项目
+		... 安装包安装
+			| wget https://xxx/Django-2.1.0.tar
+			| tar xzvf Django-2.1.0.tar
+			| cd Django-2.1.0
+			| python setup.sh install
 
-		1) django-admin 是一个django的管理命令
+		... 检测是否成功安装
+			>> 显示安装的Django版本
+			| python -m django --version
+
+			>> 显示Django版本详细信息
+			| python
+			| >>> import django
+			| >>> django.VERSION
+
+
+	## 项目
+		... 创建项目
+			django-admin 是一个django的管理命令
 			| django-admin startproject ProjectName
-		2) 项目目录中有一个命令行管理工具：manage.py
-			| python manage.py [options] [args]
 
-	3> 运行项目（默认服务器）
-		| python manage.py runserver x.x.x.x:port
+		... 项目的命令行管理工具：''' manage.py '''
+			python manage.py [options] [args]
+			1> 运行项目（默认服务器）
+				| python manage.py runserver x.x.x.x:port
 
-	4> 创建APP
-		| python manage.py startapp appname
-		在settings.py中，添加app的点路径
-		INSTALLED_APPS = [
-			...,
-			'appname.apps.AppnameConfig'
-		]
+			2> 管理界面
+				| python manage.py createsuperuser
 
-	5> 管理界面
-		| python manage.py createsuperuser
+			3> 命令行交互
+				>> 与python交互
+				| python manage.py shell
 
-	6> 模型
+				>> 与数据库交互
+				| python manage.py dbshell
 
-		1) 数据表/迁移
-			>> 编写model.py（对应数据库中的表结构）
 
-			>> 生成的文件在migrations文件夹中xxxx_initail.py
-			| python manage.py makemigrations appname
+	## 应用[APP]
+		... 创建应用
+			| python manage.py startapp appname
+			在settings.py中，添加app的点路径
+			INSTALLED_APPS = [
+				...,
+				'appname.apps.AppnameConfig'
+			]
 
-			>> 打印出xxxx对应的迁移要执行的sql
-			| python manage.py sqlmigrate appname xxxx
+		... 模型
+			1> 数据表/迁移[migrate]
+				1) 编写model.py（对应数据库中的表结构）
 
-			>> 执行迁移，自动更新表结构
-			| python manage.py migrate
+				2) 生成的文件在migrations文件夹中xxxx_initail.py
+					| python manage.py makemigrations appname
 
-			>> 命令行交互
-			| python manage.py shell （与python交互）
-			| python manage.py dbshell（与数据库交互）
+				3) 打印出xxxx对应的迁移要执行的sql
+					| python manage.py sqlmigrate appname xxxx
 
-		2) QuerySet API
-			>> 各种增删查改
+				4) 执行迁移，自动更新表结构
+					| python manage.py migrate
 
-			>> 双下划线'__'操作
+			2> QuerySet API
+				>> 各种增删查改
 
-	7> POST数据时的后端支持
+				>> 双下划线'__'操作
+
+
+	## POST数据时的后端支持
 		默认设置会出现403❌错误
+		>> 暂时取消csrf验证（在生产环境中是不安全的，不推荐这样做）
 		| from django.views.decorators.csrf import csrf_exempt
-		| @csrf_exempt  (将此装饰器放在处理函数前)
+		| # 将此装饰器放在 “处理POST数据的函数” 之前
+		| @csrf_exempt
+		| def receive_postdata(request): pass
+
+		>> 开启csrf验证，并用cookie实现
+		| from django.views.decorators.csrf import ensure_csrf_cookie
+		| # 将此装饰器放在 ”加载包含POST表单的页面的函数“ 之前
+		| @ensure_csrf_cookie
+		| def index(request): pass
 
 
-## 部署：Nginx + uWSGI + Django
+	## 部署开发栈：Nginx + uWSGI + Django
+		假设Nginx、Django都已经安装并且可以正常工作。
 
-	假设Nginx、Django都已经安装并且可以正常工作。
+		... 安装 uwsgi
+			使用pip安装
+			| sudo pip install uwsgi
 
-	1> 安装 uwsgi
-		使用pip安装
-		| sudo pip install uwsgi
+		... 配置 Django 项目的静态文件
+			1> 修改 settings.py
+				| # 生产环境的static路径，和 nginx 中的配置保持一致
+				| STATIC_ROOT = 'xxx/static'
+				| # 执行 python manage.py collectstatic 的搜索路径
+				| STATICFILES_DIRS = [
+				| 	os.path.join(BASE_DIR, "__base_static"),
+				| ]
 
-	2> 配置 Django 项目的静态文件
+			2> 部署静态文件
+				| python manage.py collectstatic
+				此命令会把每个app下的static中的文件、STATICFILES_DIRS中设置路径的文件，全部一起拷贝到STATIC_ROOT设置的路径处
 
-		1) 修改 settings.py
-			| # 生产环境的static路径，和 nginx 中的配置保持一致
-			| STATIC_ROOT = 'xxx/static'
-			| # 执行 python manage.py collectstatic 的搜索路径
-			| STATICFILES_DIRS = [
-			| 	os.path.join(BASE_DIR, "__base_static"),
-			| ]
+		... 配置 nginx
+			''' xxx.conf '''
+			| server {
+			| 	listen		port;
+			| 	charset		utf-8;
+			|
+			| 	location / {
+			| 		# uwsgi_params 的绝对路径，在nginx的conf目录下
+			| 		include xxx/conf/uwsgi_params;
+			| 		# uwsgi 的本地监听端口，和 uwsgi.ini 里面的配置保持一致
+			| 		uwsgi_pass 127.0.0.1:7123;
+			| 	}
+			|
+			| 	location /static {
+			| 		# 静态文件的绝对路径，和 STATIC_ROOT 保持一致
+			| 		alias xxx/static;
+			| 	}
+			| }
 
-		2) 部署静态文件
-			| python manage.py collectstatic
-			此命令会把每个app下的static中的文件、STATICFILES_DIRS中设置路径的文件，全部一起拷贝到STATIC_ROOT设置的路径处
+			[关于nginx的操作]
+				启动服务：nginx
+				查看版本：nginx -v
+				重启服务：nginx -s reload
+				停止服务：nginx -s stop
+		
+		... 配置 uwsgi
+			''' uwsgi.ini '''
+			| [uwsgi]
+			|
+			| # Django项目本地端口，和nginx中uwsgi_pass部分保持一致
+			| socket = 127.0.0.1:7123
+			|
+			| # 项目根目录位置
+			| chdir = /home/mzx/prod/GeekForever/aids
+			| # wsgi.py文件在项目的中的相对位置
+			| wsgi-file = /Aids/wsgi.py
+			| module = Aids.wsgi
+			|
+			| # 允许主线程存在
+			| master = true
+			| # 4个进程
+			| processes = 4
+			| # 5个线程
+			| threads = 5
+			|
+			| max-requests = 2000
+			|
+			| # ... with appropriate permissions - may be needed
+			| # chmod-socket    = 664
+			|
+			| # clear environment on exit
+			| vacuum = true
+			|
+			| # PID file & LOG file
+			| pidfile = uwsgi.pid
+			| daemonize = uwsgi.log
 
-	2> 配置 nginx
-
-		xxx.conf
-		--------------
-		| server {
-		| 	listen		port;
-		| 	charset		utf-8;
-		|
-		| 	location / {
-		| 		# uwsgi_params 的绝对路径，在nginx的conf目录下
-		| 		include xxx/conf/uwsgi_params;
-		| 		# uwsgi 的本地监听端口，和 uwsgi.ini 里面的配置保持一致
-		| 		uwsgi_pass 127.0.0.1:7123;
-		| 	}
-		|
-		| 	location /static {
-		| 		# 静态文件的绝对路径，和 STATIC_ROOT 保持一致
-        | 		alias xxx/static;
-    	| 	}
-		| }
-
-		[关于nginx的操作]
-			启动服务：nginx
-			查看版本：nginx -v
-			重启服务：nginx -s reload
-			停止服务：nginx -s stop
-	
-	3> 配置 uwsgi
-
-		uwsgi.ini
-		---------------
-		| [uwsgi]
-		|
-		| # Django项目本地端口，和nginx中uwsgi_pass部分保持一致
-		| socket = 127.0.0.1:7123
-		|
-		| # 项目根目录位置
-		| chdir = /home/mzx/prod/GeekForever/aids
-		| # wsgi.py文件在项目的中的相对位置
-		| wsgi-file = /Aids/wsgi.py
-		| module = Aids.wsgi
-		|
-		| # 允许主线程存在
-		| master = true
-		| # 4个进程
-		| processes = 4
-		| # 5个线程
-		| threads = 5
-		|
-		| max-requests = 2000
-		|
-		| # ... with appropriate permissions - may be needed
-		| # chmod-socket    = 664
-		|
-		| # clear environment on exit
-		| vacuum = true
-		|
-		| # PID file & LOG file
-		| pidfile = uwsgi.pid
-		| daemonize = uwsgi.log
-
-		[关于uwsgi的操作]
-			启动服务：uwsgi --ini uwsgi.ini
-			停止服务：uwsgi --stop uwsgi.pid
-			重启服务：uwsgi --reload uwsgi.pid
-			强制停止：killall -9 uwsgi
+			[关于uwsgi的操作]
+				启动服务：uwsgi --ini uwsgi.ini
+				停止服务：uwsgi --stop uwsgi.pid
+				重启服务：uwsgi --reload uwsgi.pid
+				强制停止：killall -9 uwsgi
 
 
-## Python数据处理
-
-	1> Pandas
-	2> Numpy
-
-
-## Python爬虫
-
-	1> Scrapy
-	
-	2> 分布式：
-		1) 
+	## ......
