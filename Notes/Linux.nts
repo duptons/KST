@@ -134,24 +134,33 @@
 
 
 	## `git`
-		| git add
-		| git status
-		| git commit
-			) | git commit
-			) | git commit -m "comment"
-		| git log
-		| git remote
-			) | git remote
-			) | git remote -v
-		| git push
-			) | git push origin master
-		| git pull
-			) | git pull
-		| git config
-			) | git config --list
-			) | git config --global user.email "dupton@126.com"
-			) | git config --global user.name "Dupton"
-			) | git config --global core.editor vim
+		... 图解
+			†-------------†                    †---------------†                    †-----------† 
+			|   Working   |    git checkout    |               |     git reset      |		    | 
+			|  Directory  |  <––––––––––––––   |  Stage/Index  |  <––––––––––––––   |  History  | 
+			|             |   ––––––––––––––>  |     缓冲区    |   ––––––––––––––>  |   历史区  | 
+			|    工作区   |      git add       |               |     git commit     |		    | 
+			†-------------†                    †---------------†                    †-----------†  
+
+		... 本地操作
+			| git add .
+			| git status
+			| git commit -m "comment"
+			| git log
+			| git diff
+				) | git diff --cached
+			| git remote -v
+			| git config
+				) | git config --list
+				) | git config --global user.email "dupton@126.com"
+				) | git config --global user.name "Dupton"
+				) | git config --global core.editor vim
+
+		... 远程操作
+			| git push
+				) | git push origin master
+			| git pull
+				) | git pull --rebase origin master
 
 
 	## `grep`
@@ -298,7 +307,7 @@
 					若不想用默认的id_rsa，可在第一次回车前输入你想要的文件名，如git_rsa
 
 			3> 将密钥添加成为可用密钥
-				| ssh-add id_rsa
+				| ssh-add ~/.ssh/id_rsa
 					>> 注意：
 						如果添加出错，如”Could not open a connection to your authentication agent.“，\
 						则执行 `ssh-agent bash`，之后重新执行本条命令
