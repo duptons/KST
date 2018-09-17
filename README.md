@@ -1,7 +1,4 @@
 # KST
-----
 
 ## 项目部署
-`./setup.sh`
-或者
-`bash setup.sh`
+在KST目录下执行 `./setup.sh` 或者 `bash setup.sh`

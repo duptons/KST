@@ -5,6 +5,11 @@
 ## ------------------------ ##
 
 
+参考文件列表：
+	[1] 
+
+
+
 
 """ 写在前面 """
 
@@ -31,9 +36,14 @@
 	## Python版本选择及安装
 
 		1> 版本选择
-			基本上，python2 和 python3，其中>=2中比较经典的是2.7.x，>=3中选择最新的稳定版就可以，比如现在最新的3.7.x。
+			基本上，python2 和 python3，其中>=2中比较经典的是2.7.x，\
+			>=3中选择最新的稳定版就可以，比如现在最新的3.7.x。
+
 		2> 编译安装
-			一般系统都有自带python，但往往版本较低（2.x），因此，常见的python的安装，通常是在保留旧版的情况下，新安装高版本的python，并将默认版本设置为高版本，将依赖旧版本的一些常用软件的启动文件进行修改，解决版本冲突，如yum等。
+			一般系统都有自带python，但往往版本较低（2.x），因此，\
+			常见的python的安装，通常是在保留旧版的情况下，新安装高版本的python，\
+			并将默认版本设置为高版本，将依赖旧版本的一些常用软件的启动文件进行修改，\
+			解决版本冲突，如yum等。
 			| wget --no-check-certificate https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
 			| tar xzvf Python-3.7.0.tgz
 			| cd Python-3.7.0
@@ -66,18 +76,18 @@
 
 
 	## <urllib>
-		from urllib import request as uR, parse as uP
-		# 将url中的中文转换成urlopen可用的字符
-		url = "https://m.baidu.com/s?kw=我们"
-        url = uP.quote(url, safe=string.printable)
-        rq = uR.Request(url)
-        rs = uR.urlopen(rq)
-        data = rs.read().decode('utf-8')
+		| from urllib import request as uR, parse as uP
+		| # 将url中的中文转换成urlopen可用的字符
+		| url = "https://m.baidu.com/s?kw=我们"
+        | url = uP.quote(url, safe=string.printable)
+        | rq = uR.Request(url)
+        | rs = uR.urlopen(rq)
+        | data = rs.read().decode('utf-8')
 
 
 	## sorted()
-		cur_list = []	
-		sorted(cur_list, key=lambda v:v[2]['name'], reverse=True)
+		| cur_list = []	
+		| sorted(cur_list, key=lambda v:v[2]['name'], reverse=True)
 
 
 	## range() & xrange()
@@ -92,8 +102,8 @@
 			| type(range(4)) == "<type 'list'>"
 			| type(xrange(4)) == "<type 'xrange'>"
 
-			>> range 直接返回一个 list，如果 list 比较大的话，比如 10**4，那么性能并不是很好，
-				此时可以使用 xrange 代替；xrange 返回一个生成器，每次循环都会返回一个元素；
+			>> range 直接返回一个 list，如果 list 比较大的话，比如 10**4，那么性能并不是很好，\
+				此时可以使用 xrange 代替；xrange 返回一个生成器，每次循环都会返回一个元素；\
 				避免一下子直接生成一个大的 list 而分配内存空间的尴尬。
 
 			>> 总体来看，相对来说 xrange 的循环性能较好一些。
@@ -218,18 +228,18 @@
 
 
 	## POST数据时的后端支持
-		默认设置会出现403❌错误
-		>> 暂时取消csrf验证（在生产环境中是不安全的，不推荐这样做）
-		| from django.views.decorators.csrf import csrf_exempt
-		| # 将此装饰器放在 “处理POST数据的函数” 之前
-		| @csrf_exempt
-		| def receive_postdata(request): pass
+		... 默认设置会出现403❌错误
+			>> 暂时取消csrf验证（在生产环境中是不安全的，不推荐这样做）
+			| from django.views.decorators.csrf import csrf_exempt
+			| # 将此装饰器放在 “处理POST数据的函数” 之前
+			| @csrf_exempt
+			| def receive_postdata(request): pass
 
-		>> 开启csrf验证，并用cookie实现
-		| from django.views.decorators.csrf import ensure_csrf_cookie
-		| # 将此装饰器放在 ”加载包含POST表单的页面的函数“ 之前
-		| @ensure_csrf_cookie
-		| def index(request): pass
+			>> 开启csrf验证，并用cookie实现
+			| from django.views.decorators.csrf import ensure_csrf_cookie
+			| # 将此装饰器放在 ”加载包含POST表单的页面的函数“ 之前
+			| @ensure_csrf_cookie
+			| def index(request): pass
 
 
 	## 部署开发栈：Nginx + uWSGI + Django
@@ -250,7 +260,8 @@
 
 			2> 部署静态文件
 				| python manage.py collectstatic
-				此命令会把每个app下的static中的文件、STATICFILES_DIRS中设置路径的文件，全部一起拷贝到STATIC_ROOT设置的路径处
+				此命令会把每个app下的static中的文件、STATICFILES_DIRS中设置路径的文件，\
+				全部一起拷贝到STATIC_ROOT设置的路径处。
 
 		... 配置 nginx
 			''' xxx.conf '''

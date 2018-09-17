@@ -24,7 +24,7 @@ filetype plugin indent on
 set backspace=indent,eol,start
 
 set modeline				" Start the pre-syntax feature
-set modelines=2				" 
+set modelines=4				" 
 " set term=xterm-256color	" xterm ?
 set clipboard=unnamed		" clipboard setting for mac
 
@@ -60,7 +60,6 @@ nmap <leader><Space>	:q<CR>
 nmap <leader>1	:set syntax=sh<CR>
 nmap <leader>2	:set syntax=python<CR>
 nmap <leader>3	:set syntax=php<CR>
-nmap <leader>4	:set syntax=vim<CR>
 
 " Some quick switch
 nmap <leader>ih	:set invhls<CR>
@@ -87,12 +86,6 @@ nmap <leader>wh	:vertical resize -9<CR>
 nmap <leader>wl	:vertical resize +9<CR>
 nmap <leader>wj	:resize -4<CR>
 nmap <leader>wk	:resize +4<CR>
-
-" Some quick paste
-nmap <leader>0	"0p
-nmap <leader>:	":p
-nmap <leader>/	"/p
-nmap <leader>-	"-p
 
 " Quick run current script via checking the syntax
 nmap <leader>r	:call Quick_runner("")<Left><Left>

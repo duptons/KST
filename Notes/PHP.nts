@@ -1,72 +1,155 @@
-## vim: set syntax=sh : ##
-##						##
-##		PHP Notes		##
-##						##
-## -------------------- ##
+<?php
+
+// vim: set syntax=php :##
+//						##
+//		PHP Notes		##
+//						##
+// -------------------- ##
 
 
-## 写在前面
+参考文件列表：
+	[1] "kst/Notes/Python.nts"
 
-	在学习之前，对PHP的目标定位是“PHP Web”，所有实践都围绕Web（包括PC和移动）。下面的内容是学习过程中的笔记，大约整理了一下，可能分类不是很友好，望见谅。
 
-## 准备工作
 
-	1> 系统环境
+
+['" 写在前面 "']
+
+	在学习之前，对PHP的目标定位是“PHP Web”，\
+	所有实践都围绕Web（包括PC和移动）。下面的内容是学习过程中的笔记，\
+	大约整理了一下，可能分类不是很友好，望见谅。
+
+
+
+['" 准备工作 "']
+
+	## 系统环境
 		Linux发行版 CentOS 6/7，Debian 8/9
 
-	2> 集成安装包
-		LNMP 或者 phpStudy
 
-	3> 关于PHP集成安装包
-		由于PHP的安装以及服务器的配置相对比较复杂，对新手不友好，所以一般用于学习或者建个人站点，推荐直接用集成安装包。
+	## 关于PHP集成安装包
+		... 说明
+			由于PHP的安装以及服务器的配置相对比较复杂，对新手不友好，\
+			所以一般用于学习或者建个人站点，推荐直接用集成安装包。
 
-		常见的LAMP系列集成环境，包含很多变体，如LAMP WAMP LNMP XAMP XAMPP等，还有一些别的版本变化，如 PHPnow phpStudy等，都大同小异，根据需求选择合适的。无论如何变体，其基本的结构和组合含义都不变，即都包含如下几部分：
+			常见的LAMP系列集成环境，包含很多变体，如LAMP WAMP LNMP XAMP XAMPP等，\
+			还有一些别的版本变化，如 PHPnow phpStudy等，都大同小异，根据需求选择合适的。\
+			无论如何变体，其基本的结构和组合含义都不变，即都包含如下几部分：
 
-		1) 适合的系统环境(Linux/Windows/...)
-		2) Web服务器(Apache/Nginx/...)
-		3) 数据库(MySQL/PostgreSQL/...)
-		4) 脚本语言(PHP/Perl/...)
-		5) 配置管理工具(phpMyAdmin)
-		6) 其他辅助软件
+			1) 适合的系统环境（Linux/Windows/...）
+			2) Web服务器（Apache/Nginx/...）
+			3) 数据库（MySQL/PostgreSQL/...）
+			4) 脚本语言（PHP/Perl/...）
+			5) 配置管理工具（phpMyAdmin）
+			6) 其他辅助软件
 
-		推荐一些实践用到的：
-		-------------------
-		>> XAMPP
-		Windows下比较推荐，选择安装Apache + MySQL + PHP + phpMyAdmin
-		官网 ???
-		>> LNMP
-		Linux下强烈推荐，选择安装Nginx + MySQL + PHP + phpMyAdmin，对Linux友好，相对比较专业，一般nginx版本较新
-		官网 https://lnmp.org
-		>> phpStudy
-		Linux下比较推荐，选择安装Nginx + MySQL + PHP + phpMyAdmin，支持PHP版本快速切换，并且封装漂亮，适合强迫症开发者，但一般nginx版本计较旧
-		官网 http://www.phpstudy.net
+		... 推荐
+			>> XAMPP
+				Windows下比较推荐，选择安装Apache + MySQL + PHP + phpMyAdmin
+				官网 ???
+			>> LNMP
+				Linux下强烈推荐，选择安装Nginx + MySQL + PHP + phpMyAdmin，对Linux友好，相对比较专业，一般nginx版本较新
+				官网 https://lnmp.org
+			>> phpStudy
+				Linux下比较推荐，选择安装Nginx + MySQL + PHP + phpMyAdmin，支持PHP版本快速切换，并且封装漂亮，适合强迫症开发者，但一般nginx版本计较旧
+				官网 http://www.phpstudy.net
 
-	4> 下载 & 安装LNMP
-		| wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz
-		| tar xvzf lnmp1.4.tar.gz  &&  cd lnmp1.4
-		| ./install.sh lnmp
-		开始安装，等待安装完成。
+		... 下载 & 安装
+			>> LNMP
+			| wget -c "http://soft.vpser.net/lnmp/lnmp1.4.tar.gz"
+			| tar xvzf lnmp1.4.tar.gz  &&  cd lnmp1.4
+			| ./install.sh lnmp
+			| // 开始安装，等待安装完成。
 
-	5> 下载 & 安装phpStudy
-		| wget -c http://lamp.phpstudy.net/phpstudy.bin
-		| chmod +x phpstudy.bin
-		| ./phpstudy.bin
-		开始安装，手动选择PHP版本、Web服务器，等待安装完成。
+			>> phpStudy
+			| wget -c "http://lamp.phpstudy.net/phpstudy.bin"
+			| chmod +x phpstudy.bin
+			| ./phpstudy.bin
+			| // 开始安装，手动选择PHP版本、Web服务器，等待安装完成。
 
-	6> 关于Nginx
 
-		1) 配置虚拟主机
-			在nginx目录下找到nginx.conf，新建文件夹vhost，然后在vhost下创建虚拟机配置文件，例如：
-
-			xxx.conf
-			--------------
+	## 关于Nginx
+		... 配置虚拟主机
+			在nginx目录下找到nginx.conf，新建文件夹vhost，\
+			然后在vhost下创建虚拟机配置文件，例如： xxx.conf
 			| server {
-			| 	listen  port;	# 例如8088
-			| 	root	project_path;	# 例如 /home/aaa/prod/XXX
+			| 	# 例如 listen 8088
+			| 	listen  port;
+			| 	# 例如 root /home/aaa/prod/bbb
+			| 	root	project_path;
 			| }
 
-		2) 其他
-			关于nginx的一些基本操作，详见 Python.nts (命令：vimer py)
+		... 其他
+			关于nginx的一些基本操作，参考 [1]
 
 
-## PHP others
+
+['" PHP基础 "']
+
+	## file_put_contents
+		| file_put_contents(
+		| 	'/var/www/html/mazhongxiang/log_1.txt',
+		| 	'%%mazhongxiangBEGIN time:['.date('Y-m-d H:i:s', time()).']%%'
+		| 		.PHP_EOL.json_encode($postData)
+		| 		.PHP_EOL.'%%mazhongxiang ================== END%%'
+		| 		.PHP_EOL,
+		| 	FILE_APPEND
+		| );
+
+
+	## [] 和 ->
+		| $txt->response->docs[0]->PageTitleSimi
+		| $txt['response']['docs'][0]['PageTitleSimi']
+
+
+	## PHP mongodb
+		| $doc = $this->docAUTOWRITER->find(array(
+		| 	'template_name' => $template_name,
+		| 	'key' => array('$regex'=>'.*'.$stock_code.'.*', '$options'=>'$i')
+		| ));
+
+
+	## PHP 嵌套函数
+		PHP很早就支持嵌套函数了。并是不PHP5.3有闭包时才有的。然而，\
+		它却不是象JS，AS那样的闭包嵌套。即它的嵌套函数根本无闭包模式的逃脱。\
+		PHP嵌套函数有一些特别之处。最特别的是，当外部函数被调用时，\
+		内部函数就会自动进入全局域中，成为新的定义函数。\
+		所以，当外部函数确保是被调用一次，不会被调用二次，那么，\
+		可以写嵌套函数在其中。否则，就会引发致命错误。
+
+
+	## Cookie
+		... Cookie设置
+			| setcookie('name', 'value', 'expire', 'path', 'domain', 'secure');
+			| setcookie('name', 'value', time()+60*60*24, '/', 'www.abc.com');
+			其中cookie名称和值是必需的，失效时间expire为当前时间加上有效期的长度，\
+			路径path的设置要特别注意不要出错（一般设置'/'即根目录比较好一些），\
+			域名domain的设置相对也比较重要（如果在子域名中设置cookie则父域名不能使用）。
+
+		... Cookie删除
+			| setcookie('name');
+			因为一般不提供直接删除的操作，所以删除方式为将其设置为失效。
+
+		... Cookie获取
+			| $_COOKIE['name'];
+
+		... 其他说明
+			浏览器一般都可以查看cookie，例如
+			Chrome：地址栏输入 'javascript:alert(document.cookie)' 或 'chrome://settings/cookies'
+			Firfox：地址栏出入 'javascript:alert(document.cookie)'
+
+
+
+['" 关于CodeIgniter "']
+
+	## base_url 和 site_url
+		... 等价关系
+			base_url('xxx')  +  index_page  =  site_url('xxx')
+
+		... 分析
+			base_url 一般指网站根路径，site_url 相当于 base_url 加上 Index_page 的效果，\
+			所以一般使用 site_url 会有更好的可移植性。base_url 和 index_page 的配置，\
+			在 application/config/config.php 中进行，其中默认效果为：
+			$['base_url'] == '' 和 $['index_page'] == 'index.php'。
+
+	## ......
