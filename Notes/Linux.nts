@@ -105,6 +105,7 @@
 
 	## `du`
 		| du -sh
+		| du -sh *
 
 
 	## `echo`
