@@ -95,7 +95,9 @@
 		... 基础布局
 			>> 左右布局
 				{float: left; width: 650px;}  {float: right; width: 250px;}
-			>> transition 变换
+			>> 变换
+				transition
+				transform
 			>> css图片镂空和虚线边缘效果
 				参考 [1]
 			>> clip {rect(top right bottom left);}

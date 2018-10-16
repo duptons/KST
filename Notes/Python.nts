@@ -54,7 +54,10 @@
 
 		1> pip
 			>> 基础命令
-			| pip list/search/install...
+			| pip list
+			| pip search django
+			| pip install django
+			| pip show django
 
 			>> 国内源
 			必须使用 HTTPS 安全连接
@@ -171,6 +174,7 @@
 		... 检测是否成功安装
 			>> 显示安装的Django版本
 			| python -m django --version
+			| pip show django
 
 			>> 显示Django版本详细信息
 			| python
