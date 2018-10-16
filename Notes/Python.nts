@@ -156,6 +156,21 @@
 
 		
 
+""" Python 基本模块 """
+
+	## <os>
+		... os.path.abspath( path )
+			| import os
+			| p = os.path.abspath( "test1" )
+			| print( p )
+				>> 绝对路径拼接
+				>> 假设当前文件所在绝对路径为 /home/sss/xxx/abc，则输出结果为 \
+					"/home/sss/xxx/abc/test1"，其中文件 test1 不一定需要存在
+			
+		... os.path.dirname()
+
+
+
 """ 关于Django """
 
 	## 安装

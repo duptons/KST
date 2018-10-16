@@ -94,21 +94,26 @@ nmap <leader>R	:call Quick_runner("")<CR>
 " merge a final l:run_info
 func Quick_runner(str)
 	exec "w"
-	let l:run_info = "!echo -e '\033[32m--------- running result ---------\033[0m' ; "
+	let l:run_before = "! F=%;"
+	let l:run_info = ' echo -e "\033[32m--------- running result ---------\033[0m"; '
 	if &syntax == "python"
-		let l:run_script = "python % " . a:str
+		let l:run_script = "python $F " . a:str
 	elseif &syntax == "sh"
-		let l:run_script = "bash % " . a:str
+		let l:run_script = "bash $F " . a:str
+	elseif &syntax == "php"
+		let l:run_script = "php $F " . a:str
+	elseif &syntax == "scss"
+		let l:run_before = l:run_before . "Fs=${F\\%.*};"
+		let l:run_script = "sass --style compressed $Fs.scss $Fs.css " . a:str
 	else
 		let l:run_script = "NONE"
 	endif
 	if l:run_script == "NONE"
-		let l:run_info = l:run_info . "echo -e '\033[31m•\033[0m Invalid syntax, this script can not be executed.' "
+		let l:run_info = l:run_info . ' echo -e "\033[31m•\033[0m Invalid syntax, this script can not be executed."; '
 	else
-		let l:run_info = l:run_info . "echo '[Script] \033[31m" . l:run_script . "\033[0m' ; "
-		let l:run_info = l:run_info . "time " . l:run_script . " ; "
+		let l:run_info = l:run_info . ' echo -e "[Script] \033[31m' . l:run_script . '\033[0m"; ' . ' time { ' . l:run_script . '; echo; }; '
 	endif
-	exec l:run_info
+	exec l:run_before . l:run_info
 endfunc
 
 " Overwrite user's vimrc with THIS SCRIPT
@@ -170,24 +175,51 @@ nmap ;V	:Vex<CR>
 "              Feature: Auto File Complete
 " *****************************************************
 
-" Auto Title for shell
-nmap <F1>	:call Auto_title_sh()<CR>
-func Auto_title_sh()
-    call setline(1, "#!/bin/bash")
-    call setline(3, "# Name:         ".expand("%:t"))
-    call setline(4, "# By:           Dupton")
-    call setline(5, "# Date:         ".strftime("%Y-%m-%d"))
-    call setline(6, "# Desc:         ~ edit now ~")
-    call setline(7, "# ------------------------------------------------------")
+nmap <F1>	:call AutoTitle()<CR>
+
+" Auto Title for python/shell
+func AutoTitle()
+	if &syntax == "python"
+		call setline(1, "# --*-- coding: utf-8 --*--")
+	elseif &syntax == "sh"
+    	call setline(1, "#!/bin/bash")
+	else
+		call Auto_title_2()
+    	return
+	endif
+
+	call append(line("."), "#")
+    call append(line(".")+1, "# Name:         ".expand("%:t"))
+    call append(line(".")+2, "# By:           Dupton")
+    call append(line(".")+3, "# Date:         ".strftime("%Y-%m-%d"))
+    call append(line(".")+4, "# Desc:         ~ edit now ~")
+    call append(line(".")+5, "# ------------------------------------------------------")
+	call append(line(".")+6, "#")
+	call append(line(".")+7, "#")
 endfunc
 
-" Auto Title for python
-nmap <F2>	:call Auto_title_python()<CR>
-func Auto_title_python()
-	call setline(1, "# --*-- coding: utf-8 --*--")
-    call setline(3, "# Name:         ".expand("%:t"))
-    call setline(4, "# By:           Dupton")
-    call setline(5, "# Date:         ".strftime("%Y-%m-%d"))
-    call setline(6, "# Desc:         ~ edit now ~")
-    call setline(7, "# ------------------------------------------------------")
+" Auto Title for scss
+func Auto_title_2()
+	if &syntax == "scss"
+		call setline(1, '@charset "UTF-8";')
+		call append(line("."), "/* ! scss")
+		call append(line(".")+1, "|")
+	elseif &syntax == "javascript"
+		call setline(1, "// ''")
+		call append(line("."), "/* ! javascript")
+		call append(line(".")+1, "|")
+	elseif &syntax == "php"
+		call setline(1, "<?php")
+		call append(line("."), "/* ! php")
+		call append(line(".")+1, "|")
+	else
+		return
+	endif
+
+	call append(line(".")+2, "| Name:         ".expand("%:t"))
+	call append(line(".")+3, "| By:           Dupton")
+	call append(line(".")+4, "| Date:         ".strftime("%Y-%m-%d"))
+	call append(line(".")+5, "| Desc:         ~ edit now ~")
+	call append(line(".")+6, "| ------------------------------------------------------")
+	call append(line(".")+7, "*/")
 endfunc
