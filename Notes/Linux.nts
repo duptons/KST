@@ -287,15 +287,22 @@
 
 
 	## `sed`
-		... 替换文件内容
+		... 搜索并替换文件内容
 			| yyy="abc/bca/cab"
 			| sed "s#xxx#${yyy}#g" file1 > file2
-				>> 把文件file1中的所有xxx替换成${yyy}
+				>> 把文件 file1 中的所有 xxx 替换成${yyy}
 				>> sed 后面一般用 's/xxx/abc' （单引号）
 				>> 遇到abc是用${yyy}表示的时候，可以使用 "s/xxx/${yyy}" （双引号）
 				>> 如果${yyy}的值（一般是路径，如/usr/bin）中，\
 					包含了's'后面使用的分隔符（一般是/），则更换分隔符，\
-					如更换为#，即 "s#xxx#${yyy}#g"
+					如更换为'#'，即 "s#xxx#${yyy}#g"
+
+		... 以行为单位替换
+			| yyy="#!/usr/bin/python2"
+			| sed -i "1c ${yyy}" file
+				>> 把文件 file 中的第 1 行替换为${yyy}
+				>> -i 表示直接修改原文件
+				>> 如果没有 -i 选项，则 sed 将修改结果输出到屏幕
 
 
 	## `ssh` & `scp`
