@@ -18,7 +18,12 @@ fi
 # shopt -s checkwinsize
 
 
-# for security
+# *****************************************************
+
+# for PS1
+# export PS1="[\e[37m\u@aly\e[m] \W\\$ "
+
+# for security (rm mv cp)
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
@@ -31,15 +36,14 @@ alias vi='vim'
 
 # for command `ls'
 alias ll='ls -pls'
-export CLICOLOR=1
-export LSCOLORS='Exgxcxdxcxegedabagadxc'
+# export CLICOLOR=1
+# export LSCOLORS='Exgxcxdxcxegedabagadxc'
 
 # for command `grep'
 alias grep='grep -v "grep" | grep --color=auto'
 
 # for command `wget`
 alias wget='wget --no-check-certificate'
-
 
 # # for $PATH
 # NEWPATH=$PATH

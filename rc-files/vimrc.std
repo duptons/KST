@@ -53,9 +53,6 @@ set tabstop=4				" Let tab key denotes 4 space
 let mapleader = " "
 let g:mapleader = " "
 
-" Quit immediately
-nmap <leader><Space>	:q<CR>
-
 " Some useful syntax shortcut
 nmap <leader>1	:set syntax=sh<CR>
 nmap <leader>2	:set syntax=python<CR>
@@ -67,7 +64,6 @@ nmap <leader>in	:set invnu<CR>
 nmap <leader>ir	:set invrnu<CR>
 nmap <leader>ic	:set invcuc<CR>
 nmap <leader>il	:set invcul<CR>
-nmap <leader>ip	:set invpaste<CR>
 
 " Mouse enabled toggle
 nmap <leader>ma	:set mouse=a<CR>

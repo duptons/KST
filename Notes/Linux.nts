@@ -271,7 +271,8 @@
 
 		... 操作
 			| screen -S screenname		# 打开一个新的screen
-			| screen -ls 				# 列出所有打开的screen
+			| screen -S xxx -X quit		# 关闭一个名为 xxx 的screen
+			| screen -ls				# 列出所有打开的screen
 			| screen -r screenname		# 连接到名为name的screen (detached ==> attached)
 			| screen -d screenname		# 退出名为name的screen (attached ==> detached)
 
@@ -327,17 +328,15 @@
 	## `ssh-keygen` & `ssh-add`
 		... 密钥生成和使用步骤
 			1> 准备生成的命令
-				| ssh-keygen -t rsa -C "abcdef"
-					>> -t ???
+				| ssh-keygen -t rsa -f ~/.ssh/xxx_rsa -C "abcdef"
+					>> -t 密钥类型，一般为 rsa 即可
+					>> -f 密钥存储的文件名，值为路径，一般位置选择在 ~/.ssh/，否则，默认名称 id_rsa
 					>> -C 注释、说明等
 
-			2> 按3次回车，大功告成， 生成一对公钥/私钥，存放在~/.ssh文件夹下，\
-				其中id_rsa保存"私钥"、id_rsa.pub保存"公钥"
-				注意：
-					若不想用默认的id_rsa，可在第一次回车前输入你想要的文件名，如git_rsa
+			2> 按两次回车，大功告成，其中xxx_rsa保存"私钥"、xxx_rsa.pub保存"公钥"
 
 			3> 将密钥添加成为可用密钥
-				| ssh-add ~/.ssh/id_rsa
+				| ssh-add ~/.ssh/xxx_rsa
 					>> 注意：
 						如果添加出错，如”Could not open a connection to your authentication agent.“，\
 						则执行 `ssh-agent bash`，之后重新执行本条命令
@@ -346,7 +345,9 @@
 				| ssh-add -l
 					>> 列出（查看）所有添加的rsa
 
-			5> 复制 id_rsa.pub 到对方服务器，从而实现无密码登录
+			5> 复制 xxx_rsa.pub 的内容到'目标服务器'的 ~/.ssh/authorized_keys 中，\
+				从而实现免密码登录'目标服务器'，或者使用以下命令复制：
+				| ssh-copy-id ~/.ssh/xxx_rsa.pub  user@ip
 
 
 	## `svn`
